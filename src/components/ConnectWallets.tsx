@@ -186,6 +186,7 @@ const ConnectWallets = (props: {
         <div className='w-full mt-4 flex items-center justify-center sm:hidden'>
           <Button
             label='Copy Link'
+            disabled={!submitted.id}
             onClick={() => {
               navigator.clipboard.writeText(`${window.location.origin}/?id=${submitted.id}`)
 
