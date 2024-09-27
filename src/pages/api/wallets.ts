@@ -1,7 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { firebase, firestore } from '@/utils/firebase'
-import badLabsApi from '@/utils/badLabsApi'
-import { ADA_TOKEN_ID } from '@/constants'
 
 export const config = {
   maxDuration: 300,
@@ -18,53 +16,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     switch (method) {
       case 'GET': {
-        const { with_amount: withAmount } = query
-
         const { docs } = await collection.get()
         const mapped = docs.map((d) => ({ ...d.data(), id: d.id }))
-
-        if (withAmount) {
-          // @ts-ignore
-          for await (const [idx, { cardano }] of mapped.entries()) {
-            const { tokens } = await badLabsApi.wallet.getData(cardano, { withTokens: true })
-
-            const found = tokens?.find((t) => t.tokenId === ADA_TOKEN_ID)
-
-            // @ts-ignore
-            mapped[idx].tokenAmount = found?.tokenAmount?.onChain || 0
-          }
-        }
-
-        // const payload = {}
-
-        // mapped.forEach(({ cardano, solana }) => {
-        //   if (!!cardano && !!solana) {
-        //     if (!payload[cardano]) {
-        //       payload[cardano] = [solana]
-        //     } else if (!payload[cardano].find((str) => str === solana)) {
-        //       payload[cardano].push(solana)
-        //     }
-        //   }
-
-        //   // if (!!solana && !!cardano) {
-        //   //   if (!payload[solana]) {
-        //   //     payload[solana] = [cardano]
-        //   //   } else if (!payload[solana].find((str) => str === cardano)) {
-        //   //     payload[solana].push(cardano)
-        //   //   }
-        //   // }
-        // })
-
-        // const bad = []
-        // const good = []
-
-        // Object.entries(payload).forEach(([k, v]) => {
-        //   if (v.length === 1) {
-        //     good.push({ cardano: k, solana: v[0] })
-        //   } else {
-        //     bad.push({ cardano: k, solana: v })
-        //   }
-        // })
 
         return res.status(200).json({
           count: mapped.length,
