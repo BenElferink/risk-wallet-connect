@@ -36,7 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       case 'GET': {
         if (process.env.NODE_ENV !== 'development') return res.status(406).end()
 
-        const collection = firestore.collection('risk-wallets')
+        const collection = firestore.collection('linked-wallets')
         const { docs } = await collection.get()
         const linkedWallets = docs.map((d) => ({ ...(d.data() as DBWalletPayload), id: d.id })).filter((d) => !!d.cardano && !!d.solana)
 

@@ -10,7 +10,7 @@ export const getServerSideProps = (async ({ query }) => {
   const id = (query.id || '') as string
 
   if (!!id) {
-    const collection = firestore.collection('risk-wallets')
+    const collection = firestore.collection('linked-wallets')
     const doc = await collection.doc(id).get()
 
     if (doc.exists) {
