@@ -1,5 +1,5 @@
-# RISK - Wallet Connect
+# $RISK Coin - Wallet Connect/Link
 
-- [Website](https://risk-wallet-connect.vercel.app/)
+- [App](https://risk-wallet-connect.vercel.app/)
 
 <img src='./docs/preview.png' />
